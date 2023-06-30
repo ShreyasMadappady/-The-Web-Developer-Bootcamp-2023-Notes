@@ -58,6 +58,10 @@ app.get('/fallinlovewith/:thing'), function(req, res) {
 <h1>You fell in love with: <%= thingVar.toUpperCase() %> <h1>
 <!-- everything inside of the '<%= %>' brackets will be treated as a JS code -->
 ```
+* ```<%``` 'Scriptlet' tag, for control-flow, no output
+* ```<%=``` Outputs the value into the template (HTML escaped)
+* ```<%-``` Outputs the unescaped value into the template
+
 ------------------------------------------------------------------------------------------------------------
 # FOR INSTALLING MONGOOSE IN NODE:
 >To install a package (In the Gitbash of the project folder in Node):
