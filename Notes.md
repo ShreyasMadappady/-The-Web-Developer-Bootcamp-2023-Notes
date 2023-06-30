@@ -1,10 +1,10 @@
 FOR INSTALLING EXPRESS IN NODE:
 
 >>>In the Gitbash of the project folder write(IN NODE):
-
+```
 $ npm init -y
 $ npm i express
-
+```
 
 >>>In app.js:
 
