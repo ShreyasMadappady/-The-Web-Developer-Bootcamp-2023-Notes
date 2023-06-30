@@ -13,7 +13,7 @@
 * ```-rf``` is a flag, a way to change what the command does. it stands for 'recursive force'
 ------------------------------------------------------------------------------------------------------------
 # FOR INSTALLING EXPRESS IN NODE:
->In the Gitbash of the project folder write(IN NODE):
+>To install a package (In the Gitbash of the project folder in Node):
 ```
 $ npm init -y
 $ npm i express
@@ -36,7 +36,7 @@ app.listen(3000, () => {
 ```
 ------------------------------------------------------------------------------------------------------------
 # FOR INSTALLING EJS IN NODE:
->In the Gitbash of the project folder write(IN NODE):
+>To install a package (In the Gitbash of the project folder in Node):
 ```
 $ npm i ejs
 ```
@@ -60,7 +60,7 @@ app.get('/fallinlovewith/:thing'), function(req, res) {
 ```
 ------------------------------------------------------------------------------------------------------------
 # FOR INSTALLING MONGOOSE IN NODE:
->In the Gitbash of the project folder write(IN NODE):
+>To install a package (In the Gitbash of the project folder in Node):
 ```
 $ npm i mongoose
 ```
@@ -101,9 +101,9 @@ const camp = new Campground({
 ------------------------------------------------------------------------------------------------------------
 
 # FOR INSTALLING METHOD OVERRIDE IN NODE:
->In the Gitbash of the project folder write(IN NODE):
+>To install a package (In the Gitbash of the project folder in Node):
 ```
-$ npm install method-override
+$ npm i method-override
 ```
 >App file:
 ```
@@ -121,7 +121,7 @@ app.use(methodOverride('_method'))
 ```
 ------------------------------------------------------------------------------------------------------------
 # FOR INSTALLING EJS-MATE ON NODE:
->In Node:
+>To install a package (In the Gitbash of the project folder in Node):
 ```
 $ npm i ejs-mate
 ```
