@@ -1,5 +1,18 @@
-# FOR INSTALLING EXPRESS IN NODE:
+# Command Line
 
+* ```ls``` shows all of the contents of the current folder we're inside of
+* ```ls dirname``` to see the contents of specific folder
+* ```cd``` is used to change directories
+* ```cd ..``` to go back one level
+* you can start writing the name of a directory and hit ```tab``` to autocomplete it
+* ```touch orange.txt``` touch is used to create new files
+* ```mkdir FavColors``` mkdir is used to create a new folder
+* ```rm orange.txtrm``` rm is used to delete a specific file
+* ```rm -rf colors/``` rm -rf allows us to remove entire directories
+* ```rm -rf /``` deletes everything!
+* ```-rf``` is a flag, a way to change what the command does. it stands for 'recursive force'
+------------------------------------------------------------------------------------------------------------
+# FOR INSTALLING EXPRESS IN NODE:
 >In the Gitbash of the project folder write(IN NODE):
 ```
 $ npm init -y
