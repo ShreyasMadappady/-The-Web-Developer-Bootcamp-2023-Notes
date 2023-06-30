@@ -10,12 +10,13 @@ $ npm i express
 ```
 const express = require('express');
 const app = express();
-
+```
+```
 app.get/post/put/delete('/campgrounds', async (req, res) => {
     const camps = await Campground.find({});
     res.render('campgrounds/index', { camps })
 })
-
+```
 app.listen(3000, () => {
     console.log('Serving on port 3000');
 })
