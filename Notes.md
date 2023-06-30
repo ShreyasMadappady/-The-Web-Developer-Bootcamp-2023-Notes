@@ -18,7 +18,7 @@
 $ npm init -y
 $ npm i express
 ```
->In app.js:
+>App file:
 ```
 const express = require('express');
 const app = express();
@@ -40,12 +40,23 @@ app.listen(3000, () => {
 ```
 $ npm i ejs
 ```
->In app.js:
+>App file:
 ```
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
 (We Need "const path = require('path');" for path.join to work)
+```
+```
+app.get('/fallinlovewith/:thing'), function(req, res) {
+    var thing = req.params.thing;
+    res.render('love.ejs', {thingVar: thing}); // we're passing the variable into the .ejs file; we can put multiple pieces of data to be used in our template
+});
+```
+>EJS file:
+```
+<h1>You fell in love with: <%= thingVar.toUpperCase() %> <h1>
+<!-- everything inside of the '<%= %>' brackets will be treated as a JS code -->
 ```
 ------------------------------------------------------------------------------------------------------------
 # FOR INSTALLING MONGOOSE IN NODE:
@@ -53,7 +64,7 @@ app.set('views', path.join(__dirname, 'views'));
 ```
 $ npm i mongoose
 ```
->In app.js:
+>App file:
 ```
 const mongoose = require('mongoose');
 ```
@@ -94,14 +105,14 @@ const camp = new Campground({
 ```
 $ npm install method-override
 ```
->In app.js:
+>App file:
 ```
 const methodOverride = require('method-override');
 ```
 ```
 app.use(methodOverride('_method'))
 ```
->In show.js(We can use PUT other than POST and GET by Method Overrideing):
+>>EJS file:(We can use PUT other than POST and GET by Method Overriding):
 ```
 <body>
     <form action="/campgrounds/<%=camps._id%>?_method=PUT" method="POST">
@@ -114,7 +125,7 @@ app.use(methodOverride('_method'))
 ```
 $ npm i ejs-mate
 ```
->In App.js:
+>App file:
 ```
 const ejsMate = require('ejs-mate');
 ```
@@ -138,7 +149,7 @@ app.engine('ejs', ejsMate);
 
 </html>
 ```
->In show.ejs
+>EJS file:
 ```
 <% layout('layouts/boilerplate') %>
 
@@ -148,7 +159,7 @@ app.engine('ejs', ejsMate);
 ```
 ------------------------------------------------------------------------------------------------------------
 # PARSES INCOMMING REQUESTS WITH JSON PAYLOADS:
->In App.js:
+>App file:
 ```
 app.use(express.urlencoded({ extended: true }));
 ```
