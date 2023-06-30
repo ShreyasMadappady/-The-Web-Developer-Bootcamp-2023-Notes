@@ -1,11 +1,11 @@
 #FOR INSTALLING EXPRESS IN NODE:
 
->>>In the Gitbash of the project folder write(IN NODE):
+>In the Gitbash of the project folder write(IN NODE):
 ```
 $ npm init -y
 $ npm i express
 ```
->>>In app.js:
+>In app.js:
 ```
 const express = require('express');
 const app = express();
@@ -23,22 +23,22 @@ app.listen(3000, () => {
 ```
 ------------------------------------------------------------------------------------------------------------
 #FOR INSTALLING EJS IN NODE:
->>>In the Gitbash of the project folder write(IN NODE):
+>In the Gitbash of the project folder write(IN NODE):
 ```
 $ npm i ejs
 ```
->>>In app.js:
+>In app.js:
 ```
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 ```
 ------------------------------------------------------------------------------------------------------------
 #FOR INSTALLING MONGOOSE IN NODE:
->>>In the Gitbash of the project folder write(IN NODE):
+>In the Gitbash of the project folder write(IN NODE):
 ```
 $ npm i mongoose
 ```
->>>In app.js:
+>In app.js:
 ```
 const mongoose = require('mongoose');
 ```
@@ -54,18 +54,18 @@ db.once('open', () => {
 ```
 ------------------------------------------------------------------------------------------------------------
 #FOR INSTALLING METHOD OVERRIDE IN NODE:
->>>In the Gitbash of the project folder write(IN NODE):
+>In the Gitbash of the project folder write(IN NODE):
 ```
 $ npm install method-override
 ```
->>>In app.js:
+>In app.js:
 ```
 const methodOverride = require('method-override');
 ```
 ```
 app.use(methodOverride('_method'))
 ```
->>>In show.js(We can use PUT other than POST and GET by Method Overrideing):
+>In show.js(We can use PUT other than POST and GET by Method Overrideing):
 ```
 <body>
     <form action="/campgrounds/<%=camps._id%>?_method=PUT" method="POST">
@@ -74,18 +74,18 @@ app.use(methodOverride('_method'))
 ```
 ------------------------------------------------------------------------------------------------------------
 #FOR INSTALLING EJS-MATE ON NODE:
->>>In Node:
+>In Node:
 ```
 $ npm i ejs-mate
 ```
->>>In App.js:
+>In App.js:
 ```
 const ejsMate = require('ejs-mate');
 ```
 ```
 app.engine('ejs', ejsMate);
 ```
->>>Create views/layouts/boilerplate.ejs and write:
+>Create views/layouts/boilerplate.ejs and write:
 ```
 <!DOCTYPE html>
 <html lang="en">
@@ -102,7 +102,7 @@ app.engine('ejs', ejsMate);
 
 </html>
 ```
->>>In show.ejs
+>In show.ejs
 ```
 <% layout('layouts/boilerplate') %>
 
