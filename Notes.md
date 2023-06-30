@@ -1,4 +1,4 @@
-#FOR INSTALLING EXPRESS IN NODE:
+# FOR INSTALLING EXPRESS IN NODE:
 
 >In the Gitbash of the project folder write(IN NODE):
 ```
@@ -22,7 +22,7 @@ app.listen(3000, () => {
 })
 ```
 ------------------------------------------------------------------------------------------------------------
-#FOR INSTALLING EJS IN NODE:
+# FOR INSTALLING EJS IN NODE:
 >In the Gitbash of the project folder write(IN NODE):
 ```
 $ npm i ejs
@@ -33,7 +33,7 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 ```
 ------------------------------------------------------------------------------------------------------------
-#FOR INSTALLING MONGOOSE IN NODE:
+# FOR INSTALLING MONGOOSE IN NODE:
 >In the Gitbash of the project folder write(IN NODE):
 ```
 $ npm i mongoose
@@ -53,7 +53,7 @@ db.once('open', () => {
 })
 ```
 ------------------------------------------------------------------------------------------------------------
-#FOR INSTALLING METHOD OVERRIDE IN NODE:
+# FOR INSTALLING METHOD OVERRIDE IN NODE:
 >In the Gitbash of the project folder write(IN NODE):
 ```
 $ npm install method-override
@@ -73,7 +73,7 @@ app.use(methodOverride('_method'))
 </body>
 ```
 ------------------------------------------------------------------------------------------------------------
-#FOR INSTALLING EJS-MATE ON NODE:
+# FOR INSTALLING EJS-MATE ON NODE:
 >In Node:
 ```
 $ npm i ejs-mate
@@ -107,7 +107,7 @@ app.engine('ejs', ejsMate);
 <% layout('layouts/boilerplate') %>
 
     <body>
-        >>>>code
+        <h1></h1>
     </body>
 ```
 ------------------------------------------------------------------------------------------------------------
