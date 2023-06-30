@@ -31,6 +31,8 @@ $ npm i ejs
 ```
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
+
+(We Need "const path = require('path');" for path.join to work)
 ```
 ------------------------------------------------------------------------------------------------------------
 # FOR INSTALLING MONGOOSE IN NODE:
