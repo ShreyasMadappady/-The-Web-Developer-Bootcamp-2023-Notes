@@ -55,6 +55,27 @@ db.once('open', () => {
 })
 ```
 ------------------------------------------------------------------------------------------------------------
+# FOR CREATING SCHEMA AND MODEL:
+```
+const mongoose = require('mongoose');
+```
+```
+const CampgroundSchema = new mongoose.Schema({
+    title: String,
+    price: String,
+});
+```
+```
+const Campground = mongoose.model('Campground', CampgroundSchema)
+```
+```
+const camp = new Campground({
+    title: Malnad,
+    price: 250$,
+});
+```
+------------------------------------------------------------------------------------------------------------
+
 # FOR INSTALLING METHOD OVERRIDE IN NODE:
 >In the Gitbash of the project folder write(IN NODE):
 ```
