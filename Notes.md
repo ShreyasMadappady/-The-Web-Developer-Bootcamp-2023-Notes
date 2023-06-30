@@ -111,7 +111,7 @@ app.engine('ejs', ejsMate);
     </body>
 ```
 ------------------------------------------------------------------------------------------------------------
-# parses incoming requests with JSON payloads:
+# PARSES INCOMMING REQUESTS WITH JSON PAYLOADS:
 >In App.js:
 ```
 app.use(express.urlencoded({ extended: true }));
