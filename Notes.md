@@ -136,7 +136,7 @@ const ejsMate = require('ejs-mate');
 ```
 app.engine('ejs', ejsMate);
 ```
->Create views/layouts/boilerplate.ejs and write:
+>Create ```views/layouts/boilerplate.ejs``` and write:
 ```
 <!DOCTYPE html>
 <html lang="en">
@@ -158,7 +158,7 @@ app.engine('ejs', ejsMate);
 <% layout('layouts/boilerplate') %>
 
     <body>
-        <h1></h1>
+        <h1>Demo code</h1>
     </body>
 ```
 ------------------------------------------------------------------------------------------------------------
@@ -167,3 +167,22 @@ app.engine('ejs', ejsMate);
 ```
 app.use(express.urlencoded({ extended: true }));
 ```
+------------------------------------------------------------------------------------------------------------
+# TO CREATE PARTIALS FOR NAVBAR AND FOOTER
+>Create a file ```views/partials/navbar.ejs``` and create navbar
+```
+<nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+    </div>
+</nav>
+```
+>In boilerplate.ejs paste  ```<%- include('../partials/navbar') %>``` inside ```<body>```
+```
+<body>
+    <%- include('../partials/navbar') %>
+        <main>
+        <h1>demo code</h1>
+        </main>
+</body>
+```
+------------------------------------------------------------------------------------------------------------
