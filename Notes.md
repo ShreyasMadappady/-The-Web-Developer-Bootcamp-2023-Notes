@@ -116,7 +116,7 @@ const methodOverride = require('method-override');
 ```
 app.use(methodOverride('_method'))
 ```
->>EJS file:(We can use PUT other than POST and GET by Method Overriding):
+>EJS file:(We can use PUT other than POST and GET by Method Overriding):
 ```
 <body>
     <form action="/campgrounds/<%=camps._id%>?_method=PUT" method="POST">
