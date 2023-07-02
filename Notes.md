@@ -186,3 +186,51 @@ app.use(express.urlencoded({ extended: true }));
 </body>
 ```
 ------------------------------------------------------------------------------------------------------------
+# CLIENT-SIDE FORM VALIDATIONS USING BOOTSTRAP
+>EJS file:
+* Add ```required```in the form inputs
+* Add ```novalidate```in the form header
+* Add ```class="needs-validation"```in the form header
+Example:
+```
+ <div class="row">
+            <form action="/campgrounds" method="POST" novalidate class="needs-validation">
+                <div class="mb-3">
+                    <label class="form-label" for="title">Title</label>
+                    <input class="form-control" type="text" id="title" name="campground[title]" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="location">Location</label>
+                    <input class="form-control" type="text" id="location" name="campground[location]" required>
+                </div>
+            </form>
+            <a href="/campgrounds">All Campgrounds</a>
+        </div>
+    </div>
+```
+>Add Script from the bootstrap to EJS file or boilerplate:
+(The class name of the form and script should be same as shown below)
+```
+    <script>
+        (function () {
+            'use strict'
+
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.querySelectorAll('.needs-validation')
+
+            // Loop over them and prevent submission
+            Array.prototype.slice.call(forms)
+                .forEach(function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (!form.checkValidity()) {
+                            event.preventDefault()
+                            event.stopPropagation()
+                        }
+
+                        form.classList.add('was-validated')
+                    }, false)
+                })
+        })()
+    </script>
+```
+
