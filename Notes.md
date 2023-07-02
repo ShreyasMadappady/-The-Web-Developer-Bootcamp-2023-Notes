@@ -233,4 +233,63 @@ Example:
         })()
     </script>
 ```
+------------------------------------------------------------------------------------------------------------
+# HANDLING ERRORS IN EXPRESS APPS:
+>Create file ```utils/ExpressError.js```
+```
+class ExpressError extends Error {
+    constructor(message, statusCode) {
+        super();
+        this.message = message;
+        this.statusCode = statusCode;
+    }
+}
+module.exports = ExpressError;
+```
+>Create file ```utils/catchAsync.js```
+```
+module.exports = func => {
+    return (req, res, next) => {
+        func(req, res, next).catch(next);
+    }
+}
+```
+>Create file ``views/error.ejs```
+```
+<% layout('layouts/boilerplate')%>
+<div class="row">
+    <div class="col-6 offset-3">
+        <div class="alert alert-danger" role="alert">
+            <h4 class="alert-heading"><%=err.message%></h4>
+            <p><%= err.stack %></p>
+        </div>
+    </div>
+</div>
+```
+>App file:
+```
+const catchAsync = require('./utils/catchAsync');
+const ExpressError = require('./utils/ExpressError');
+```
+```
+app.post('/campgrounds', validateCampground, catchAsync(async (req, res, next) => {
+    // if (!req.body.campground) throw new ExpressError('Invalid Campground Data', 400);
+    const campground = new Campground(req.body.campground);
+    await campground.save();
+    res.redirect(`/campgrounds/${campground._id}`)
+}))
+```
+The below codes should be after all request methods like get,post,put,delete:
+```
+app.all('*', (req, res, next) => {
+    next(new ExpressError('Page Not Found', 404))
+})
+```
+```
+app.use((err, req, res, next) => {
+    const { statusCode = 500 } = err;
+    if (!err.message) err.message = 'Oh No, Something Went Wrong!'
+    res.status(statusCode).render('error', { err })
+})
+```
 
