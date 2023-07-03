@@ -329,5 +329,14 @@ app.use((err, req, res, next) => {
 })
 ```
 ------------------------------------------------------------------------------------------------------------
+#SERVER-SIDE VALIDATIONS (JOI SCHEMA VALIDATIONS): VALIDATE THE DATA WHEN YOU POST, CREATE OR UPDATE THE DATA:
+>To install a package (In the Gitbash of the project folder in Node):
+```
+>$ npm i joi
+```
+>App file:
+```
+const Joi = require('joi');
+````
 
 
