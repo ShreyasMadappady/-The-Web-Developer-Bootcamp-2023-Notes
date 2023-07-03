@@ -234,6 +234,42 @@ Example:
     </script>
 ```
 ------------------------------------------------------------------------------------------------------------
+# PLACEMENT APP.USE AND ERROR HANDLER IN EXPRESS:
+```
+const express = require('express');
+const path = require('path');
+
+const app = express();
+
+
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'))
+
+>>>THIS WILL HIT FIRST ALWAYS WHEN THE REQUEST IS CALLED(MAKE SURE TO ADD next()):<<<
+app.use((req, res, next) => {
+    console.log('23d323232e32e32e')
+    next();
+})
+
+app.get('/dogs', (req, res) => {
+    res.render('home')
+})
+
+>>>THIS WILL HIT IF ANY THE REQUEST ABOVE ARE NOT HIT:<<<
+app.use((req, res) => {
+    res.send('ERRORRRRR')
+})
+
+>>>ERROR HANDLER SHOULD BE PLACED AT THE END:<<<
+app.use((err, req, res, next) => {
+    res.status(500).send('Something broke!')
+})
+
+app.listen(3000, () => {
+    console.log('SERVER RUNNING ON 3000')
+})
+```
+------------------------------------------------------------------------------------------------------------
 # HANDLING ERRORS IN EXPRESS APPS:
 >Create file ```utils/ExpressError.js```
 ```
@@ -293,41 +329,5 @@ app.use((err, req, res, next) => {
 })
 ```
 ------------------------------------------------------------------------------------------------------------
-# PLACEMENT APP.USE AND ERROR HANDLER IN EXPRESS:
-```
-const express = require('express');
-const path = require('path');
 
-const app = express();
-
-
-app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'))
-
->>>THIS WILL HIT FIRST ALWAYS WHEN THE REQUEST IS CALLED(MAKE SURE TO ADD next()):<<<
-app.use((req, res, next) => {
-    console.log('23d323232e32e32e')
-    next();
-})
-
-app.get('/dogs', (req, res) => {
-    res.render('home')
-})
-
->>>THIS WILL HIT IF ANY THE REQUEST ABOVE ARE NOT HIT:<<<
-app.use((req, res) => {
-    res.send('ERRORRRRR')
-})
-
->>>ERROR HANDLER SHOULD BE PLACED AT THE END:<<<
-app.use((err, req, res, next) => {
-    res.status(500).send('Something broke!')
-})
-
-app.listen(3000, () => {
-    console.log('SERVER RUNNING ON 3000')
-})
-
-
-```
 
