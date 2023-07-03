@@ -245,7 +245,7 @@ const app = express();
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'))
 
->>>THIS WILL HIT FIRST ALWAYS WHEN THE REQUEST IS CALLED(MAKE SURE TO ADD next()):<<<
+>>>THIS WILL HIT FIRST ALWAYS WHEN THE ANY REQUEST IS CALLED(MAKE SURE TO ADD "next()"):<<<
 app.use((req, res, next) => {
     console.log('23d323232e32e32e')
     next();
@@ -255,7 +255,7 @@ app.get('/dogs', (req, res) => {
     res.render('home')
 })
 
->>>THIS WILL HIT IF ANY THE REQUEST ABOVE ARE NOT HIT:<<<
+>>>THIS WILL HIT IF ANY THE REQUEST OTHER THAN ABOVE ARE HIT LIKE : http://localhost:3000/dewewwcdcceccccwcwc <<<
 app.use((req, res) => {
     res.send('ERRORRRRR')
 })
