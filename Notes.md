@@ -234,7 +234,7 @@ Example:
     </script>
 ```
 ------------------------------------------------------------------------------------------------------------
-# PLACEMENT APP.USE AND ERROR HANDLER IN EXPRESS:
+# PLACEMENT OF APP.USE AND ERROR HANDLER IN EXPRESS:
 ```
 const express = require('express');
 const path = require('path');
