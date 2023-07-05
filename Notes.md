@@ -536,5 +536,29 @@ Farm.findOne({ name: 'Full Belly Farms' })
     .populate('products')
     .then(farm => console.log(farm))
 ```
+------------------------------------------------------------------------------------------------------------
+# ROUTER
+>APP file:
+```
+const express = require('express');
+const app = express();
+```
+```
+const dogRoutes = require('./routes/dogs');
+const adminRoutes = require('./routes/admin')
+```
+```
+app.use('/dogs', dogRoutes);
+app.use('/admin', adminRoutes)
+```
+```
+app.listen(3000, () => {
+    console.log('Serving app on localhost:3000')
+})
+```
+>EJS file:
+```routes/dogs.js
+
+
 
 
