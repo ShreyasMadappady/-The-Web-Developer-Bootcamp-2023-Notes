@@ -538,27 +538,62 @@ Farm.findOne({ name: 'Full Belly Farms' })
 ```
 ------------------------------------------------------------------------------------------------------------
 # ROUTER
->APP file:
+>Create file ```routes/reviews.js``` and write:
 ```
 const express = require('express');
-const app = express();
+const router = express.Router({ mergeParams: true });
 ```
 ```
-const dogRoutes = require('./routes/dogs');
-const adminRoutes = require('./routes/admin')
+const Campground = require('../models/campground');
+const Review = require('../models/review');
 ```
 ```
-app.use('/dogs', dogRoutes);
-app.use('/admin', adminRoutes)
+const { reviewSchema } = require('../schemas.js');
 ```
 ```
-app.listen(3000, () => {
-    console.log('Serving app on localhost:3000')
-})
+const ExpressError = require('../utils/ExpressError');
+const catchAsync = require('../utils/catchAsync');
 ```
->EJS file:
-```routes/dogs.js
+```
+const validateReview = (req, res, next) => {
+    const { error } = reviewSchema.validate(req.body);
+    if (error) {
+        const msg = error.details.map(el => el.message).join(',')
+        throw new ExpressError(msg, 400)
+    } else {
+        next();
+    }
+}
+```
+```
+router.post('/', validateReview, catchAsync(async (req, res) => {
+    const campground = await Campground.findById(req.params.id);
+    const review = new Review(req.body.review);
+    campground.reviews.push(review);
+    await review.save();
+    await campground.save();
+    req.flash('success', 'Created new review!');
+    res.redirect(`/campgrounds/${campground._id}`);
+}))
 
-
+router.delete('/:reviewId', catchAsync(async (req, res) => {
+    const { id, reviewId } = req.params;
+    await Campground.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
+    await Review.findByIdAndDelete(reviewId);
+    req.flash('success', 'Successfully deleted review')
+    res.redirect(`/campgrounds/${id}`);
+}))
+```
+```
+module.exports = router;
+```
+>App file:
+```
+const reviews = require('./routes/reviews');
+```
+```
+app.use('/campgrounds/:id/reviews', reviews)
+```
+------------------------------------------------------------------------------------------------------------
 
 
