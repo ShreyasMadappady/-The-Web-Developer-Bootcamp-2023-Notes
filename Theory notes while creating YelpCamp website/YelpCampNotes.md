@@ -597,7 +597,7 @@ const reviews = require('./routes/reviews');
 app.use('/campgrounds/:id/reviews', reviews)
 ```
 ------------------------------------------------------------------------------------------------------------
-# SESSION (AFTER INSTALLING SESSION ABOVE)
+# SESSION
 > To install a package (In the Gitbash of the project folder in Node):
 ```
 $ npm i express-session
@@ -622,7 +622,7 @@ const sessionConfig = {
 app.use(session(sessionConfig))
 ```
 ------------------------------------------------------------------------------------------------------------
-# FLASH
+# FLASH (AFTER INSTALLING SESSION ABOVE)
 > To install a package (In the Gitbash of the project folder in Node):
 ```
 $ npm i connect-flash
