@@ -542,10 +542,9 @@ Farm.findOne({ name: 'Full Belly Farms' })
 ```
 const express = require('express');
 const router = express.Router({ mergeParams: true });
-
+```
 //Add { mergeParams: true } to get access to all the params fron app.js to reviews.js
 //Ex: Now the Id params can be accessed in the reviews.js from app.use('/campgrounds/:id/reviews', reviews)
-```
 ```
 const Campground = require('../models/campground');
 const Review = require('../models/review');
