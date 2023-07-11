@@ -1,4 +1,4 @@
-# YelpCamp website notes
+# YelpCamp Website Notes
 
 This repository contains my notes which were taken while creating YelpCamp website which was taught in Udemy course by colt steele https://www.udemy.com/the-web-developer-bootcamp and https://www.udemy.com/the-advanced-web-developer-bootcamp
 
