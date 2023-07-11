@@ -597,7 +597,7 @@ const reviews = require('./routes/reviews');
 app.use('/campgrounds/:id/reviews', reviews)
 ```
 ------------------------------------------------------------------------------------------------------------
-# SESSION
+# SESSION (AFTER INSTALLING SESSION ABOVE)
 > To install a package (In the Gitbash of the project folder in Node):
 ```
 $ npm i express-session
