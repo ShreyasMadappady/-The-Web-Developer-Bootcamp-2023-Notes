@@ -597,5 +597,70 @@ const reviews = require('./routes/reviews');
 app.use('/campgrounds/:id/reviews', reviews)
 ```
 ------------------------------------------------------------------------------------------------------------
-
+# SESSION
+> To install a package (In the Gitbash of the project folder in Node):
+```
+$ npm i express-session
+```
+> App file:
+```
+const session = require('express-session');
+```
+```
+const sessionConfig = {
+    secret: 'thisshouldbeabettersecret!',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        httpOnly: true,
+        expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+        maxAge: 1000 * 60 * 60 * 24 * 7
+    }
+}
+```
+```
+app.use(session(sessionConfig))
+```
+------------------------------------------------------------------------------------------------------------
+# FLASH
+> To install a package (In the Gitbash of the project folder in Node):
+```
+$ npm i connect-flash
+```
+> App file:
+```
+const flash = require('connect-flash');
+```
+```
+app.use(flash());
+```
+```
+app.use((req, res, next) => {
+    res.locals.success = req.flash('success');
+    res.locals.error = req.flash('error');
+    next();
+})
+```
+//Above code should be before the route handlers
+> In ```routes/reviews``` add ```req.flash('success', 'Created new review!');```
+```
+router.post('/', validateReview, catchAsync(async (req, res) => {
+    const campground = await Campground.findById(req.params.id);
+    const review = new Review(req.body.review);
+    campground.reviews.push(review);
+    await review.save();
+    await campground.save();
+    req.flash('success', 'Created new review!');
+    res.redirect(`/campgrounds/${campground._id}`);
+}))
+```
+> In ```views/layouts/boilerplate.ejs``` add ```<%= success %>```
+```
+<body>  
+    <main>
+        <%= success %>
+        <%- body %>
+    </main>
+</body>
+```
 
