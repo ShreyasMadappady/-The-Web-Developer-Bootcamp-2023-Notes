@@ -665,4 +665,93 @@ router.post('/', validateReview, catchAsync(async (req, res) => {
 ```
 // Now you will get 'Created new review!' message above body when you post something.
 ------------------------------------------------------------------------------------------------------------
+# PASSPORT
+> To install a package (In the Gitbash of the project folder in Node):
+```
+$ npm i passport passport-local passport-local-mongoose
+```
+> Create ```models/user.js``` in write:
+```
+const mongoose = require('mongoose');
+const passportLocalMongoose = require('passport-local-mongoose');
+
+const UserSchema = new mongoose.Schema({
+    email: {
+        type: String,
+        required: true,
+        unique: true
+    }
+});
+
+UserSchema.plugin(passportLocalMongoose);
+
+module.exports = mongoose.model('User', UserSchema);
+```
+> App file:
+```
+const passport = require('passport');
+const LocalStrategy = require('passport-local');
+const User = require('./models/user');
+```
+```
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+```
+```
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+```
+```
+app.use((req, res, next) => {
+    console.log(req.session)
+    res.locals.currentUser = req.user;
+    res.locals.success = req.flash('success');
+    res.locals.error = req.flash('error');
+    next();
+})
+```
+```
+const userRoutes = require('./routes/users');
+```
+
+
+> Create ```routes/users.js``` and write:
+```
+const express = require('express');
+const router = express.Router();
+const passport = require('passport');
+const catchAsync = require('../utils/catchAsync');
+const User = require('../models/user');
+
+router.post('/register', catchAsync(async (req, res, next) => {
+    try {
+        const { email, username, password } = req.body;
+        const user = new User({ email, username });
+        const registeredUser = await User.register(user, password);
+        req.login(registeredUser, err => {
+            if (err) return next(err);
+            req.flash('success', 'Welcome to Yelp Camp!');
+            res.redirect('/campgrounds');
+        })
+    } catch (e) {
+        req.flash('error', e.message);
+        res.redirect('register');
+    }
+}));
+router.post('/login', passport.authenticate('local', { failureFlash: true, failureRedirect: '/login' }), (req, res) => {
+    req.flash('success', 'welcome back!');
+    const redirectUrl = req.session.returnTo || '/campgrounds';
+    delete req.session.returnTo;
+    res.redirect(redirectUrl);
+})
+
+router.get('/logout', (req, res) => {
+    req.logout();
+    req.flash('success', "Goodbye!");
+    res.redirect('/campgrounds');
+})
+
+module.exports = router;
+```
 
