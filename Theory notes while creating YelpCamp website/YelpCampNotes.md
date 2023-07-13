@@ -19,17 +19,15 @@ $ npm init -y
 $ npm i express
 ```
 >App file:
-```
+```js
 const express = require('express');
 const app = express();
-```
-```
+
 app.get/post/put/delete('/campgrounds', async (req, res) => {
     const camps = await Campground.find({});
     res.render('campgrounds/index', { camps })
 })
-```
-```
+
 app.listen(3000, () => {
     console.log('Serving on port 3000');
 })
@@ -41,20 +39,19 @@ app.listen(3000, () => {
 $ npm i ejs
 ```
 >App file:
-```
+```js
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
-(We Need "const path = require('path');" for path.join to work)
-```
-```
+//(We Need "const path = require('path');" for path.join to work)
+
 app.get('/fallinlovewith/:thing'), function(req, res) {
     var thing = req.params.thing;
     res.render('love.ejs', {thingVar: thing}); // we're passing the variable into the .ejs file; we can put multiple pieces of data to be used in our template
 });
 ```
 >EJS file:
-```
+```html
 <h1>You fell in love with: <%= thingVar.toUpperCase() %> <h1>
 <!-- everything inside of the '<%= %>' brackets will be treated as a JS code -->
 ```
@@ -69,13 +66,11 @@ app.get('/fallinlovewith/:thing'), function(req, res) {
 $ npm i mongoose
 ```
 >App file:
-```
+```js
 const mongoose = require('mongoose');
-```
-```
+
 mongoose.connect('mongodb://localhost:27017/yelp-camp');
-```
-```
+
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'))
 db.once('open', () => {
@@ -84,19 +79,16 @@ db.once('open', () => {
 ```
 ------------------------------------------------------------------------------------------------------------
 # FOR CREATING SCHEMA AND MODEL:
-```
+```js
 const mongoose = require('mongoose');
-```
-```
+
 const CampgroundSchema = new mongoose.Schema({
     title: String,
     price: String,
 });
-```
-```
+
 const Campground = mongoose.model('Campground', CampgroundSchema)
-```
-```
+
 const camp = new Campground({
     title: Malnad,
     price: 250$,
@@ -110,14 +102,13 @@ const camp = new Campground({
 $ npm i method-override
 ```
 >App file:
-```
+```js
 const methodOverride = require('method-override');
-```
-```
+
 app.use(methodOverride('_method'))
 ```
 >EJS file:(We can use PUT other than POST and GET by Method Overriding):
-```
+```html
 <body>
     <form action="/campgrounds/<%=camps._id%>?_method=PUT" method="POST">
     </form>
@@ -130,14 +121,13 @@ app.use(methodOverride('_method'))
 $ npm i ejs-mate
 ```
 >App file:
-```
+```js
 const ejsMate = require('ejs-mate');
-```
-```
+
 app.engine('ejs', ejsMate);
 ```
 >Create ```views/layouts/boilerplate.ejs``` and write:
-```
+```html
 <!DOCTYPE html>
 <html lang="en">
 
@@ -154,7 +144,7 @@ app.engine('ejs', ejsMate);
 </html>
 ```
 >EJS file:
-```
+```html
 <% layout('layouts/boilerplate') %>
 
     <body>
@@ -164,20 +154,20 @@ app.engine('ejs', ejsMate);
 ------------------------------------------------------------------------------------------------------------
 # PARSES INCOMMING REQUESTS WITH JSON PAYLOADS:
 >App file:
-```
+```js
 app.use(express.urlencoded({ extended: true }));
 ```
 ------------------------------------------------------------------------------------------------------------
 # TO CREATE PARTIALS FOR NAVBAR AND FOOTER
 >Create a file ```views/partials/navbar.ejs``` and create navbar
-```
+```html
 <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
     </div>
 </nav>
 ```
 >In boilerplate.ejs paste  ```<%- include('../partials/navbar') %>``` inside ```<body>```
-```
+```html
 <body>
     <%- include('../partials/navbar') %>
         <main>
@@ -192,7 +182,7 @@ app.use(express.urlencoded({ extended: true }));
 * Add ```novalidate```in the form header
 * Add ```class="needs-validation"```in the form header
 Example:
-```
+```html
  <div class="row">
             <form action="/campgrounds" method="POST" novalidate class="needs-validation">
                 <div class="mb-3">
@@ -210,7 +200,7 @@ Example:
 ```
 >Add Script from the bootstrap to EJS file or boilerplate:
 (The class name of the form and script should be same as shown below)
-```
+```html
     <script>
         (function () {
             'use strict'
@@ -235,7 +225,7 @@ Example:
 ```
 ------------------------------------------------------------------------------------------------------------
 # PLACEMENT OF APP.USE AND ERROR HANDLER IN EXPRESS:
-```
+```js
 const express = require('express');
 const path = require('path');
 
@@ -245,7 +235,7 @@ const app = express();
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'))
 
->>>THIS WILL HIT FIRST ALWAYS WHEN THE ANY REQUEST IS CALLED(MAKE SURE TO ADD "next()"):<<<
+// >>>THIS WILL HIT FIRST ALWAYS WHEN THE ANY REQUEST IS CALLED(MAKE SURE TO ADD "next()"):<<<
 app.use((req, res, next) => {
     console.log('23d323232e32e32e')
     next();
@@ -255,7 +245,7 @@ app.get('/dogs', (req, res) => {
     res.render('home')
 })
 
->>>THIS WILL HIT IF ANY THE REQUEST OTHER THAN ABOVE ARE HIT LIKE : http://localhost:3000/dewewwcdcceccccwcwc <<<
+// >>>THIS WILL HIT IF ANY THE REQUEST OTHER THAN ABOVE ARE HIT LIKE : http://localhost:3000/dewewwcdcceccccwcwc <<<
 app.use((req, res) => {
     res.send('ERRORRRRR')
 })
@@ -272,7 +262,7 @@ app.listen(3000, () => {
 ------------------------------------------------------------------------------------------------------------
 # HANDLING ERRORS IN EXPRESS APPS:
 >Create file ```utils/ExpressError.js```
-```
+```js
 class ExpressError extends Error {
     constructor(message, statusCode) {
         super();
@@ -283,7 +273,7 @@ class ExpressError extends Error {
 module.exports = ExpressError;
 ```
 >Create file ```utils/catchAsync.js```
-```
+```js
 module.exports = func => {
     return (req, res, next) => {
         func(req, res, next).catch(next);
@@ -291,7 +281,7 @@ module.exports = func => {
 }
 ```
 >Create file ``views/error.ejs```
-```
+```html
 <% layout('layouts/boilerplate')%>
 <div class="row">
     <div class="col-6 offset-3">
@@ -303,25 +293,23 @@ module.exports = func => {
 </div>
 ```
 >App file:
-```
+```js
 const catchAsync = require('./utils/catchAsync');
 const ExpressError = require('./utils/ExpressError');
-```
-```
+
 app.post('/campgrounds', validateCampground, catchAsync(async (req, res, next) => {
     // if (!req.body.campground) throw new ExpressError('Invalid Campground Data', 400);
     const campground = new Campground(req.body.campground);
     await campground.save();
     res.redirect(`/campgrounds/${campground._id}`)
 }))
-```
-The below codes should be after all request methods like get,post,put,delete:
-```
+
+//The below codes should be after all request methods like get,post,put,delete:
+
 app.all('*', (req, res, next) => {
     next(new ExpressError('Page Not Found', 404))
 })
-```
-```
+
 app.use((err, req, res, next) => {
     const { statusCode = 500 } = err;
     if (!err.message) err.message = 'Oh No, Something Went Wrong!'
@@ -335,7 +323,7 @@ app.use((err, req, res, next) => {
 >$ npm i joi
 ```
 >Create file```YelpCamp/schemas.js```
-```
+```js
 const Joi = require('joi');
 
 module.exports.campgroundSchema = Joi.object({
@@ -349,10 +337,9 @@ module.exports.campgroundSchema = Joi.object({
 });
 ```
 >App file:
-```
+```js
 const { campgroundSchema } = require('./schemas.js');
-```
-```
+
 const validateCampground = (req, res, next) => {
     const { error } = campgroundSchema.validate(req.body);
     if (error) {
@@ -362,19 +349,19 @@ const validateCampground = (req, res, next) => {
         next();
     }
 }
-```
-```
+
 app.put('/campgrounds/:id', validateCampground, catchAsync(async (req, res) => {
     const { id } = req.params;
     const campground = await Campground.findByIdAndUpdate(id, { ...req.body.campground });
     res.redirect(`/campgrounds/${campground._id}`)
 }));
+
+//The Updating and Posting will complete only if the ```validateCampground``` will not put error.
 ```
-The Updating and Posting will complete only if the ```validateCampground``` will not put error.
 ------------------------------------------------------------------------------------------------------------
 # DATA RELATIONSHIPS WITH MONGO:
 >One To Few:
-```
+```js
 const mongoose = require('mongoose');
 
 mongoose.connect('mongodb://localhost:27017/relationshipDemo', { useNewUrlParser: true, useUnifiedTopology: true })
@@ -432,7 +419,7 @@ const addAddress = async (id) => {
 }
 ```
 >One To Many:
-```
+```js
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
@@ -477,7 +464,7 @@ const findTweet = async () => {
 findTweet();
 ```
 >One to "Bajillions":
-```
+```js
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
@@ -538,25 +525,23 @@ Farm.findOne({ name: 'Full Belly Farms' })
 ```
 ------------------------------------------------------------------------------------------------------------
 # ROUTER
+Express Routers are a way to organize your Express application such that your primary app. js file does not become bloated and difficult to reason about. 
 >Create file ```routes/reviews.js``` and write:
-```
+```js
 const express = require('express');
 const router = express.Router({ mergeParams: true });
-```
+
 //Add { mergeParams: true } to get access to all the params fron app.js to reviews.js
 //Ex: Now the Id params can be accessed in the reviews.js from app.use('/campgrounds/:id/reviews', reviews)
-```
+
 const Campground = require('../models/campground');
 const Review = require('../models/review');
-```
-```
+
 const { reviewSchema } = require('../schemas.js');
-```
-```
+
 const ExpressError = require('../utils/ExpressError');
 const catchAsync = require('../utils/catchAsync');
-```
-```
+
 const validateReview = (req, res, next) => {
     const { error } = reviewSchema.validate(req.body);
     if (error) {
@@ -566,8 +551,7 @@ const validateReview = (req, res, next) => {
         next();
     }
 }
-```
-```
+
 router.post('/', validateReview, catchAsync(async (req, res) => {
     const campground = await Campground.findById(req.params.id);
     const review = new Review(req.body.review);
@@ -585,19 +569,18 @@ router.delete('/:reviewId', catchAsync(async (req, res) => {
     req.flash('success', 'Successfully deleted review')
     res.redirect(`/campgrounds/${id}`);
 }))
-```
-```
+
 module.exports = router;
 ```
 >App file:
-```
+```js
 const reviews = require('./routes/reviews');
-```
-```
+
 app.use('/campgrounds/:id/reviews', reviews)
 ```
 ------------------------------------------------------------------------------------------------------------
 # SESSION
+express-session is a middleware module in Express. js that allows you to create sessions in your web application. It stores session data on the server side, using a variety of different storage options, and allows you to track the activity of a user across requests.
 > To install a package (In the Gitbash of the project folder in Node):
 ```
 $ npm i express-session
@@ -620,7 +603,8 @@ const sessionConfig = {
 app.use(session(sessionConfig))
 ```
 ------------------------------------------------------------------------------------------------------------
-# FLASH (AFTER INSTALLING SESSION ABOVE)
+# FLASH (AFTER INSTALLING SESSION ABOVE) 
+The connect-flash module in NodeJS allows developers to render a pop-up message whenever a user is redirected to a particular webpage. For example, in your Nodejs demo application, you want to notify your users on logging in and logging out.
 > To install a package (In the Gitbash of the project folder in Node):
 ```
 $ npm i connect-flash
@@ -664,7 +648,8 @@ router.post('/', validateReview, catchAsync(async (req, res) => {
 ```
 
 ------------------------------------------------------------------------------------------------------------
-# PASSPORT (REGISTER, LOGIN, LOGOUT)
+# PASSPORT (REGISTER, LOGIN, LOGOUT) 
+The Passport is a node package, or library which we can install in any nodeJs project. The Passport provides the functionality for authentication in the app. Also, it provides different encryption strategies to encrypt user information, such as a password.
 > To install a package (In the Gitbash of the project folder in Node):
 ```
 $ npm i passport passport-local passport-local-mongoose
@@ -823,7 +808,8 @@ router.get('/logout', (req, res, next) => {
 module.exports = router;
 ```
 ------------------------------------------------------------------------------------------------------------
-# isLoggedIn MIDDLEWARE
+# isLoggedIn MIDDLEWARE 
+Middleware to protect from creating new campgrounds when nobody is logged in.
 > Create ```YelpCamp/middleware.js``` and write:
 ```js
 module.exports.isLoggedIn = (req, res, next) => {
@@ -845,7 +831,8 @@ router.get('/new', isLoggedIn, (req, res) => {
 })
 ```
 ------------------------------------------------------------------------------------------------------------
-# CURRENT USER HELPER:
+# CURRENT USER HELPER 
+To show Login and register button if there is no currentUser else Logout will be showed.
 > In ```YelpCamp/app.js``` add ```res.locals.currentUser = req.user;``` so that we can have access in every template :
 ```js
 app.use((req, res, next) => {
