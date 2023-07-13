@@ -897,6 +897,89 @@ router.post('/login',
     });
 ```
 ------------------------------------------------------------------------------------------------------------
+# AUTHORIZATION
+## After login when creating the new campground the userId of who loggedIn is added to campground as author
+> In ```YelpCamp/models/campground.js```
+```js
+// add `author` to schema
+const CampgroundSchema = new Schema({
+    title: String,
+    image: String,
+    price: Number,
+    description: String,
+    location: String,
+    author: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    },
+    reviews: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Review'
+        }
+    ]
+});
+```
+> In ```YelpCamp/routes/campgrounds.js```
+```js
+// Add "campground.author = req.user._id;" to post
+router.post('/', isLoggedIn, validateCampground, catchAsync(async (req, res, next) => {
+    const campground = new Campground(req.body.campground);
+    campground.author = req.user._id;
+    await campground.save();
+    req.flash('success', 'Successfully made a new campground!');
+    res.redirect(`/campgrounds/${campground._id}`)
+}))
+```
+## Showing of Edit/Delete Button if I am logged in as Owner of that Campground and Hiding of Edit/Delete Button if I am not owner of the content.
+> In ```YelpCamp/views/campgrounds/show.ejs```:
+```html
+// Add if condition to if there is currentUser and that user is owner of the content.
+<%  if( currentUser && campground.author.equals(currentUser._id))  {%>
+         <div class="card-body">
+                <a class="card-link btn btn-info" href="/campgrounds/<%=campground._id%>/edit">Edit</a>
+                <form class="d-inline" action="/campgrounds/<%=campground._id%>?_method=DELETE" method="POST">
+                    <button class="btn btn-danger">Delete</button>
+                </form>
+         </div>
+<% } %>
+```
+## Authorization Middleware:
+We are succesfully hiding the edit and delete buttons if you don't own the campground But we can still send a request through postmen, for example: /edit, So we definitely want to protect this route as well by using middleware:
+> In ```YelpCamp/middleware.js```:
+```js
+const Campground = require('./models/campground');
+
+//is author middleware
+module.exports.isAuthor = async (req, res, next) => {
+    const { id } = req.params;
+    const campground = await Campground.findById(id);
+    if (!campground.author.equals(req.user._id)) {
+        req.flash('error', 'You do not have permission to do that!');
+        return res.redirect(`/campgrounds/${id}`);
+    }
+    next();
+}
+```
+> In ```YelpCamp/routes/campgrounds.js```:
+```js
+// add 'isLoggedIn;
+const { isLoggedIn, isAuthor, validateCampground } = require('../middleware');
+
+// Add isAuthor Middleware to routes where you want Authorization
+// Now if the Campground is not owned by the owner you can't Edit/Delete from the postman as well.
+router.get('/:id/edit', isLoggedIn, isAuthor, catchAsync(async (req, res) => {
+    const { id } = req.params;
+    const campground = await Campground.findById(id)
+    if (!campground) {
+        req.flash('error', 'Cannot find that campground!');
+        return res.redirect('/campgrounds');
+    }
+    res.render('campgrounds/edit', { campground });
+}))
+```
+------------------------------------------------------------------------------------------------------------
+
 
 
 
