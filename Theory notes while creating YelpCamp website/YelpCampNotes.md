@@ -665,7 +665,7 @@ router.post('/', validateReview, catchAsync(async (req, res) => {
 ```
 // Now you will get 'Created new review!' message above body when you post something.
 ------------------------------------------------------------------------------------------------------------
-# PASSPORT
+# PASSPORT (REGISTER, LOGIN, LOGOUT)
 > To install a package (In the Gitbash of the project folder in Node):
 ```
 $ npm i passport passport-local passport-local-mongoose
@@ -694,6 +694,9 @@ const LocalStrategy = require('passport-local');
 const User = require('./models/user');
 ```
 ```
+const userRoutes = require('./routes/users');
+```
+```
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
@@ -711,11 +714,62 @@ app.use((req, res, next) => {
     next();
 })
 ```
+> Create ```views/users/register.ejs```and write:
 ```
-const userRoutes = require('./routes/users');
+// REGISTER EJS PAGE:
+
+<% layout('layouts/boilerplate')%>
+<h1>Register</h1>
+<form action="/register" method="POST" class="validated-form" novalidate>
+    <div class="mb-3">
+        <label class="form-label" for="username">Username</label>
+        <input class="form-control" type="text" id="username" name="username" required>
+        <div class="valid-feedback">
+            Looks good!
+        </div>
+    </div>
+    <div class="mb-3">
+        <label class="form-label" for="email">Email</label>
+        <input class="form-control" type="email" id="email" name="email" required>
+        <div class="valid-feedback">
+            Looks good!
+        </div>
+    </div>
+    <div class="mb-3">
+        <label class="form-label" for="password">Password</label>
+        <input class="form-control" type="password" id="password" name="password" required>
+        <div class="valid-feedback">
+            Looks good!
+        </div>
+    </div>
+    <button class="btn btn-success">Register</button>
+</form>
 ```
+> Create ```views/users/login.ejs```and write:
+```
+// LOGIN EJS PAGE:
 
+<% layout('layouts/boilerplate')%>
+<h1>Login</h1>
+<form action="/login" method="POST" class="validated-form" novalidate>
+    <div class="mb-3">
+        <label class="form-label" for="username">Username</label>
+        <input class="form-control" type="text" id="username" name="username" required>
+        <div class="valid-feedback">
+            Looks good!
+        </div>
+    </div>
 
+    <div class="mb-3">
+        <label class="form-label" for="password">Password</label>
+        <input class="form-control" type="password" id="password" name="password" required>
+        <div class="valid-feedback">
+            Looks good!
+        </div>
+    </div>
+    <button class="btn btn-success">Login</button>
+</form>
+```
 > Create ```routes/users.js``` and write:
 ```
 const express = require('express');
@@ -723,6 +777,13 @@ const router = express.Router();
 const passport = require('passport');
 const catchAsync = require('../utils/catchAsync');
 const User = require('../models/user');
+```
+```
+//FOR REGISTER:
+
+router.get('/register', (req, res) => {
+    res.render('users/register');
+});
 
 router.post('/register', catchAsync(async (req, res, next) => {
     try {
@@ -739,19 +800,32 @@ router.post('/register', catchAsync(async (req, res, next) => {
         res.redirect('register');
     }
 }));
+```
+```
+//FOR LOGIN:
+
+router.get('/login', (req, res) => {
+    res.render('users/login');
+})
+
 router.post('/login', passport.authenticate('local', { failureFlash: true, failureRedirect: '/login' }), (req, res) => {
     req.flash('success', 'welcome back!');
     const redirectUrl = req.session.returnTo || '/campgrounds';
     delete req.session.returnTo;
     res.redirect(redirectUrl);
 })
+```
+```
+//FOR LOGOUT:
 
 router.get('/logout', (req, res) => {
     req.logout();
     req.flash('success', "Goodbye!");
     res.redirect('/campgrounds');
 })
-
+```
+```
 module.exports = router;
 ```
+
 
