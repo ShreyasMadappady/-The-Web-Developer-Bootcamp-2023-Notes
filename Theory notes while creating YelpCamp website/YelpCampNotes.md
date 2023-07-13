@@ -703,7 +703,6 @@ passport.deserializeUser(User.deserializeUser());
 
 app.use((req, res, next) => {
     console.log(req.session)
-    res.locals.currentUser = req.user;
     res.locals.success = req.flash('success');
     res.locals.error = req.flash('error');
     next();
@@ -788,7 +787,7 @@ router.post('/register', catchAsync(async (req, res, next) => {
             if (err) return next(err);
             req.flash('success', 'Welcome to Yelp Camp!');
             res.redirect('/campgrounds');
-        })
+        }) // Refer Udemy 528
     } catch (e) {
         req.flash('error', e.message);
         res.redirect('register');
@@ -810,6 +809,7 @@ router.post('/login', passport.authenticate('local', { failureFlash: true, failu
 
 //FOR LOGOUT:
 
+// Add button for logout wherever required!
 router.get('/logout', (req, res, next) => {
     req.logout(function (err) {
         if (err) {
@@ -844,7 +844,31 @@ router.get('/new', isLoggedIn, (req, res) => {
     res.render('campgrounds/new');
 })
 ```
-
+------------------------------------------------------------------------------------------------------------
+# CURRENT USER HELPER:
+> In ```YelpCamp/app.js``` add ```res.locals.currentUser = req.user;``` so that we can have access in every template :
+```js
+app.use((req, res, next) => {
+    console.log(req.session)
+    res.locals.currentUser = req.user;
+    res.locals.success = req.flash('success');
+    res.locals.error = req.flash('error');
+    next();
+})
+// So that we can have access in every template
+```
+> In ```YelpCamp/views/partials/navbar.ejs``` add if condition:
+```html
+<div class="navbar-nav ml-auto">
+  <% if(!currentUser) {%>
+     <a class="nav-link" href="/login">Login</a>
+     <a class="nav-link" href="/register">Register</a>
+  <% } else {%>
+     <a class="nav-link" href="/logout">Logout</a>
+  <% } %>
+</div>
+// Login and register button will be showed if there is no currentUser else Logout will be showed.
+```
 
 
 
