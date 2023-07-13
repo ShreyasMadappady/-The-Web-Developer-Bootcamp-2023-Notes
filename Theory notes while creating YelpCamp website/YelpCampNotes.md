@@ -979,6 +979,52 @@ router.get('/:id/edit', isLoggedIn, isAuthor, catchAsync(async (req, res) => {
 }))
 ```
 ------------------------------------------------------------------------------------------------------------
+# REFRACTORING THE CONTROLLER:
+Reorganizing our code a bit. It's kind of the heart of your application. It's where all the main logic happens
+> Create ```YelpCamp/controllers/campgrounds.js```:
+```js
+const Campground = require('../models/campground');
+
+//this is the logic part of the router to open index of all Campgrounds
+module.exports.index = async (req, res) => {
+    const campgrounds = await Campground.find({});
+    res.render('campgrounds/index', { campgrounds })
+}
+```
+> In ```YelpCamp/routes/campgrounds.js```:
+```js
+const campgrounds = require('../controllers/campgrounds');
+
+//the logic part is fetched from the controller
+router.get('/', catchAsync(campgrounds.index));
+```
+------------------------------------------------------------------------------------------------------------
+# A Fancy Way To Restructure Routes
+A way of grouping similar routes together, or rather routes that have the same path, but different verbs.
+> In ```YelpCamp/routes/campgrounds.js```:
+```js
+router.route('/')
+    .get(catchAsync(campgrounds.index))
+    .post(isLoggedIn, validateCampground, catchAsync(campgrounds.createCampground))
+
+//this route needs to go before our show page route. Otherwise, it thinks that new is an ID and so it matches this route.
+router.get('/new', isLoggedIn, campgrounds.renderNewForm)
+
+router.route('/:id')
+    .get(catchAsync(campgrounds.showCampground))
+    .put(isLoggedIn, isAuthor, validateCampground, catchAsync(campgrounds.updateCampground))
+    .delete(isLoggedIn, isAuthor, catchAsync(campgrounds.deleteCampground));
+
+router.get('/:id/edit', isLoggedIn, isAuthor, catchAsync(campgrounds.renderEditForm))
+```
+------------------------------------------------------------------------------------------------------------
+# Displaying Star Ratings using Starability CSS
+Refer Udemy 540 & 541.
+------------------------------------------------------------------------------------------------------------
+
+
+
+
 
 
 
