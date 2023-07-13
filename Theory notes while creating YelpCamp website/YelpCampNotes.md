@@ -603,10 +603,9 @@ app.use('/campgrounds/:id/reviews', reviews)
 $ npm i express-session
 ```
 > App file:
-```
+```js
 const session = require('express-session');
-```
-```
+
 const sessionConfig = {
     secret: 'thisshouldbeabettersecret!',
     resave: false,
@@ -617,8 +616,7 @@ const sessionConfig = {
         maxAge: 1000 * 60 * 60 * 24 * 7
     }
 }
-```
-```
+
 app.use(session(sessionConfig))
 ```
 ------------------------------------------------------------------------------------------------------------
@@ -628,22 +626,21 @@ app.use(session(sessionConfig))
 $ npm i connect-flash
 ```
 > App file:
-```
+```js
 const flash = require('connect-flash');
-```
-```
+
 app.use(flash());
-```
-```
+
 app.use((req, res, next) => {
     res.locals.success = req.flash('success');
     res.locals.error = req.flash('error');
     next();
 })
-```
 //Above code should be before the route handlers
-> In ```routes/reviews``` add ```req.flash('success', 'Created new review!');```
 ```
+
+> In ```routes/reviews``` add ```req.flash('success', 'Created new review!');```
+```js
 router.post('/', validateReview, catchAsync(async (req, res) => {
     const campground = await Campground.findById(req.params.id);
     const review = new Review(req.body.review);
@@ -655,15 +652,17 @@ router.post('/', validateReview, catchAsync(async (req, res) => {
 }))
 ```
 > In ```views/layouts/boilerplate.ejs``` add ```<%= success %>```
-```
+```html
 <body>  
     <main>
         <%= success %>
         <%- body %>
     </main>
 </body>
-```
+
 // Now you will get 'Created new review!' message above body when you post something.
+```
+
 ------------------------------------------------------------------------------------------------------------
 # PASSPORT (REGISTER, LOGIN, LOGOUT)
 > To install a package (In the Gitbash of the project folder in Node):
