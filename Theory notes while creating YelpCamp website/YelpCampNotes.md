@@ -621,6 +621,7 @@ app.use((req, res, next) => {
     next();
 })
 //Above code should be before the route handlers
+//res.locals is an object that provides a way to pass data through the application during the request-response cycle. It allows you to store variables that can be accessed by your templates and other middleware functions.
 ```
 
 > In ```routes/reviews``` add ```req.flash('success', 'Created new review!');```
@@ -842,6 +843,7 @@ app.use((req, res, next) => {
     res.locals.error = req.flash('error');
     next();
 })
+//res.locals is an object that provides a way to pass data through the application during the request-response cycle. It allows you to store variables that can be accessed by your templates and other middleware functions.
 // So that we can have access in every template
 ```
 > In ```YelpCamp/views/partials/navbar.ejs``` add if condition:
@@ -856,6 +858,47 @@ app.use((req, res, next) => {
 </div>
 // Login and register button will be showed if there is no currentUser else Logout will be showed.
 ```
+------------------------------------------------------------------------------------------------------------
+# ReturnTo Behavior
+To redirect users back to the page they were visiting before being sent to the login page, once they've successfully logged in.
+> In ```YelpCamp/middleware.js``` add function ```module.exports.storeReturnTo``` and add line ```req.session.returnTo = req.originalUrl``` to ```module.exports.isLoggedIn```
+```js
+module.exports.isLoggedIn = (req, res, next) => {
+    if (!req.isAuthenticated()) {
+        req.session.returnTo = req.originalUrl
+        req.flash('error', 'You must be signed in first!');
+        return res.redirect('/login');
+    }
+    next();
+}
+
+module.exports.storeReturnTo = (req, res, next) => {
+    if (req.session.returnTo) {
+        res.locals.returnTo = req.session.returnTo;
+    }
+    next();
+}
+```
+> In ```YelpCamp/routes/users.js``` add:
+```js
+const { storeReturnTo } = require('../middleware');
+
+//add the 'storeReturnTo' middleware function before the passport.authenticate middleware
+router.post('/login',
+    // use the storeReturnTo middleware to save the returnTo value from session to res.locals
+    storeReturnTo,
+    // passport.authenticate logs the user in and clears req.session
+    passport.authenticate('local', {failureFlash: true, failureRedirect: '/login'}),
+    // Now we can use res.locals.returnTo to redirect the user after login
+    (req, res) => {
+        req.flash('success', 'Welcome back!');
+        const redirectUrl = res.locals.returnTo || '/campgrounds'; // update this line to use res.locals.returnTo now
+        res.redirect(redirectUrl);
+    });
+```
+------------------------------------------------------------------------------------------------------------
+
+
 
 
 
