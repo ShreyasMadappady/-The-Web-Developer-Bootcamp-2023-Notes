@@ -839,7 +839,7 @@ const { isLoggedIn } = require('../middleware');
 router.get('/new', isLoggedIn, (req, res) => {
     res.render('campgrounds/new');
 })
-
+```
 
 
 
