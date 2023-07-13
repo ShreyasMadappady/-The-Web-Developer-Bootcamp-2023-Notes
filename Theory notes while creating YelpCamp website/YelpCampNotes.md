@@ -671,7 +671,7 @@ router.post('/', validateReview, catchAsync(async (req, res) => {
 $ npm i passport passport-local passport-local-mongoose
 ```
 > Create ```models/user.js``` in write:
-```
+```js
 const mongoose = require('mongoose');
 const passportLocalMongoose = require('passport-local-mongoose');
 
@@ -688,24 +688,20 @@ UserSchema.plugin(passportLocalMongoose);
 module.exports = mongoose.model('User', UserSchema);
 ```
 > App file:
-```
+```js
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const User = require('./models/user');
-```
-```
+
 const userRoutes = require('./routes/users');
-```
-```
+
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
-```
-```
+
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
-```
-```
+
 app.use((req, res, next) => {
     console.log(req.session)
     res.locals.currentUser = req.user;
@@ -715,7 +711,7 @@ app.use((req, res, next) => {
 })
 ```
 > Create ```views/users/register.ejs```and write:
-```
+```html
 // REGISTER EJS PAGE:
 
 <% layout('layouts/boilerplate')%>
@@ -746,7 +742,7 @@ app.use((req, res, next) => {
 </form>
 ```
 > Create ```views/users/login.ejs```and write:
-```
+```html
 // LOGIN EJS PAGE:
 
 <% layout('layouts/boilerplate')%>
@@ -771,14 +767,13 @@ app.use((req, res, next) => {
 </form>
 ```
 > Create ```routes/users.js``` and write:
-```
+```js
 const express = require('express');
 const router = express.Router();
 const passport = require('passport');
 const catchAsync = require('../utils/catchAsync');
 const User = require('../models/user');
-```
-```
+
 //FOR REGISTER:
 
 router.get('/register', (req, res) => {
@@ -800,8 +795,7 @@ router.post('/register', catchAsync(async (req, res, next) => {
         res.redirect('register');
     }
 }));
-```
-```
+
 //FOR LOGIN:
 
 router.get('/login', (req, res) => {
@@ -814,8 +808,7 @@ router.post('/login', passport.authenticate('local', { failureFlash: true, failu
     delete req.session.returnTo;
     res.redirect(redirectUrl);
 })
-```
-```
+
 //FOR LOGOUT:
 
 router.get('/logout', (req, res) => {
@@ -823,8 +816,7 @@ router.get('/logout', (req, res) => {
     req.flash('success', "Goodbye!");
     res.redirect('/campgrounds');
 })
-```
-```
+
 module.exports = router;
 ```
 
