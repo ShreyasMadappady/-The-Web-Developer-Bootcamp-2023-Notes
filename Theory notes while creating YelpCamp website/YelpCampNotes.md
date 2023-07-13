@@ -818,5 +818,30 @@ router.get('/logout', (req, res) => {
 
 module.exports = router;
 ```
+------------------------------------------------------------------------------------------------------------
+# isLoggedIn MIDDLEWARE
+> Create ```YelpCamp/middleware.js``` and write:
+```js
+module.exports.isLoggedIn = (req, res, next) => {
+    if (!req.isAuthenticated()) {
+        req.session.returnTo = req.originalUrl
+        req.flash('error', 'You must be signed in first!');
+        return res.redirect('/login');
+    }
+    next();
+}
+```
+> In ```routes/campgrounds.js``` add ```isLoggedIn``` middleware:
+```js
+const { isLoggedIn } = require('../middleware');
+
+//Adding 'isLoggedIn' Middleware to protect from creating new campgrounds when nobody is logged in.
+router.get('/new', isLoggedIn, (req, res) => {
+    res.render('campgrounds/new');
+})
+
+
+
+
 
 
