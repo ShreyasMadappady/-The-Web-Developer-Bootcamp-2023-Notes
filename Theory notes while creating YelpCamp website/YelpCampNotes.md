@@ -1021,7 +1021,27 @@ router.get('/:id/edit', isLoggedIn, isAuthor, catchAsync(campgrounds.renderEditF
 # Displaying Star Ratings using Starability CSS
 Refer Udemy 540 & 541.
 ------------------------------------------------------------------------------------------------------------
-
+# IMAGE UPLOAD
+PENDING!!!!
+------------------------------------------------------------------------------------------------------------
+# ADDING MAPS
+PENDING!!!!
+------------------------------------------------------------------------------------------------------------
+# COMMON SECURITY ISSUES
+## Sanitizing HTML w/JOI
+Somebody could add a campground in with a script in its title or somewhere else, the browser gets confused and the script runs, So we don't want to allow a user to enter any sort of script anywhere in any of our fields and we can validate that.
+Now, unfortunately, we're using joy, which is not a bad thing, but joy does not come with its own validation for escaping HTML.
+PENDING!!!!
+------------------------------------------------------------------------------------------------------------
+# DEPLOYING
+Deploying our application
+## Using Cloud DataBase (MongoDB Atlas)
+> Create free Account
+> Setup User with Password
+database access -> new database user -> Fill UserName -> Autogerenerate -> copy password -> database user privileges -> read and write to any database -> Add User
+> Network Access -> Add IP Address -> Add Current IP Address
+> Connect to your Cluster -> Connect -> Connect Your Application -> Node -> Copy URL
+------------------------------------------------------------------------------------------------------------
 
 
 
