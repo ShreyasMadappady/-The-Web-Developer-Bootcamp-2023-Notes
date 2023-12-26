@@ -29,7 +29,7 @@ app.get/post/put/delete('/campgrounds', async (req, res) => {
 })
 
 app.listen(3000, () => {
-    consl.log('Serving on port 3000');
+    consol.log('Serving on port 3000');
 })
 ```
 ------------------------------------------------------------------------------------------------------------
